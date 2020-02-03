@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import PokeList from './components/PokeList';
+import axios from 'axios';
+import Header from './layouts/Header';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    pokemons: {}
+  };
+
+  // getPokemons = async () => {
+  //   let res = await axios.get(
+  //     'https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json'
+  //   );
+  //   let { pokeData } = res.data;
+  //   this.setState({ pokemons: pokeData });
+  // };
+
+  componentDidMount() {
+    axios
+      .get(
+        'https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json'
+      )
+      .then(res => this.setState({ pokemons: res.data }));
+  }
+
+  render() {
+    const { pokemon } = this.state.pokemons;
+    return (
+      <div>
+        {/* {this.state.pokemons === {} ? (
+          <div>Loading...</div>
+        ) : ( */}
+        <Header />
+        <div>
+          <PokeList pokemons={pokemon} />
+        </div>
+        {/* )} */}
+      </div>
+    );
+  }
 }
 
 export default App;
